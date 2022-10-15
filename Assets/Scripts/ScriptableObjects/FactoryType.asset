@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 116fec5cca5226d47bde2e09f63c4d57, type: 3}
+  m_Name: FactoryType
+  m_EditorClassIdentifier: 
+  blueEnemy: {fileID: 8116727453073174544, guid: aa4cb0844ec709b46b7aef8a57990548, type: 3}
+  redEnemy: {fileID: 0}
+  shuriken: {fileID: 8227436685173848962, guid: 118426c3f599b5c4daafdf926e3b9914, type: 3}
