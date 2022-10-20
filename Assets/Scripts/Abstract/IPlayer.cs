@@ -6,4 +6,5 @@ interface IPlayer
 {
     Transform FindCloselyEnemy();
     void Shoot();
+    void TakeDamage(float damage);
 }

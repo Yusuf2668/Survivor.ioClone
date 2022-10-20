@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: FactoryType
   m_EditorClassIdentifier: 
   blueEnemy: {fileID: 8116727453073174544, guid: aa4cb0844ec709b46b7aef8a57990548, type: 3}
-  redEnemy: {fileID: 0}
   shuriken: {fileID: 8227436685173848962, guid: 118426c3f599b5c4daafdf926e3b9914, type: 3}
+  rocket: {fileID: 2825807295758177737, guid: c5d6ae5043792174bb416c8c9c81fc9b, type: 3}

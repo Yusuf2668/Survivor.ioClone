@@ -17,6 +17,9 @@ public class FactoryManager : MonoSingleton<FactoryManager>
             case "Shuriken":
                 resultObject = Instantiate(factoryType.shuriken, parent);
                 break;
+            case "Rocket":
+                resultObject = Instantiate(factoryType.rocket, parent);
+                break;
         }
         return resultObject;
     }

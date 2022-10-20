@@ -7,6 +7,14 @@ TagManager:
   - Enemy
   - BlueEnemy
   - Shuriken
+  - Slot05
+  - Slot03
+  - DropReward
+  - PinPoint
+  - clawInside
+  - Gem
+  - Magnet
+  - Rocket
   layers:
   - Default
   - TransparentFX
@@ -14,11 +22,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - ItemCollider
+  - Gem
+  - Enemy
+  - Gun
   - 
   - 
   - 

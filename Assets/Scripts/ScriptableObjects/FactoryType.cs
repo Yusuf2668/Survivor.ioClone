@@ -8,4 +8,6 @@ public class FactoryType : ScriptableObject
     public GameObject blueEnemy;
 
     public GameObject shuriken;
+
+    public GameObject rocket;
 }

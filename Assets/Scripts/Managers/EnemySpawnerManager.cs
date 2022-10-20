@@ -15,6 +15,7 @@ public class EnemySpawnerManager : MonoBehaviour
 
     private void Start()
     {
+        SpawnRandomEnemy();
         InvokeRepeating("SpawnRandomEnemy", 5f,5f);
     }
 

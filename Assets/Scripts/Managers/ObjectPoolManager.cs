@@ -39,13 +39,15 @@ public class ObjectPoolManager : MonoSingleton<ObjectPoolManager>
             case "BlueEnemy":
                 nextObject = FindNextObject(1, spawnPosition);
                 break;
+            case "Rocket":
+                nextObject = FindNextObject(2, spawnPosition);
+                break;
         }
         return nextObject;
     }
 
     private GameObject FindNextObject(int poolListNumber, Vector3 spawnPosition)
     {
-        Debug.Log(poolList[poolListNumber].poolObjectList);
         var gameObject = poolList[poolListNumber].poolObjectList.Dequeue();
         gameObject.transform.position = spawnPosition;
         gameObject.SetActive(true);

@@ -4,10 +4,39 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour, IPlayer
+public class PlayerController : MonoSingleton<PlayerController>, IPlayer
 {
-    [SerializeField] private GameObject knifeShootPoint;
+    public float ShootCount
+    {
+        get { return _shootCount; }
+        set
+        {
+            if (_shootCount < 5)
+            {
+                _shootCount = value;
+            }
+        }
+    }
+    public float ItemColliderRadius
+    {
+        get { return _itemColliderRadius; }
+        set
+        {
+            if (_itemColliderRadius < 5)
+            {
+                _itemColliderRadius = value;
+                itemCollider.radius = _itemColliderRadius;
+                PlayerPrefs.SetFloat(radiusPrefs, _itemColliderRadius);
+            }
+        }
+    }
+
+    [SerializeField] private CircleCollider2D itemCollider;
+
+    [SerializeField] private Slider expSliderBar;
+    [SerializeField] private Image healthBar;
 
     [SerializeField] private float shootForce;
     [SerializeField] private float shootrepeatTime;
@@ -17,12 +46,16 @@ public class PlayerController : MonoBehaviour, IPlayer
     [SerializeField] private DynamicJoystick _dynamicJoystick;
     [SerializeField] private SpriteRenderer _playerBodySprite;
 
+
+    public string radiusPrefs = "radiusPrefs";
+
     private Vector3 _direction;
 
     private float _distanceToCloselyTarget;
     private float _distanceToTarget;
     private float _shootCount = 1;//ayný anda birden çok saldýrý yapmasýna yarýyor
     private float _shootrepeatTime;
+    private float _itemColliderRadius;
 
     private Transform _target;
 
@@ -30,6 +63,8 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     private void Awake()
     {
+        _itemColliderRadius = PlayerPrefs.GetFloat(radiusPrefs, 0.5f);
+        itemCollider.radius = _itemColliderRadius;
         _animator = GetComponent<Animator>();
     }
 
@@ -53,11 +88,8 @@ public class PlayerController : MonoBehaviour, IPlayer
         if (_shootrepeatTime <= 0)
         {
             _shootrepeatTime = shootrepeatTime;
-            for (int i = 0; i < _shootCount; i++)
-            {
-                FindCloselyEnemy();
-                Shoot();
-            }
+            FindCloselyEnemy();
+            Shoot();
         }
     }
 
@@ -76,12 +108,10 @@ public class PlayerController : MonoBehaviour, IPlayer
         }
         return _target;
     }
-
     public void Shoot()
     {
         if (_target == null) return;
-        _direction = FindCloselyEnemy().transform.position - transform.position;
-        ObjectPoolManager.Instance.GetPoolObject("Shuriken", transform.position).GetComponent<Rigidbody2D>().velocity = new Vector2(_direction.x, _direction.y).normalized * shootForce * Time.deltaTime;
+        StartCoroutine("ShootEnumator");
     }
     private void PlayerMove()
     {
@@ -96,17 +126,48 @@ public class PlayerController : MonoBehaviour, IPlayer
         }
         transform.position += new Vector3(direction.x, direction.z) * Time.deltaTime * speed;
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<EnemyController>())
+        switch (collision.tag)
         {
-            health -= 10;
-            if (health <= 0)
-            {
-                _animator.SetTrigger("Death");
-                gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
-                this.enabled = false;
-            }
+            case "Gem":
+                GemController gemController = collision.GetComponent<GemController>();
+                LevelManager.Instance.AddExp(gemController.expCount * 2);
+                gemController.TakeGem();
+                break;
+            case "Magnet":
+                EventManager.Instance.MagnetCollect();
+                collision.gameObject.SetActive(false);
+                break;
+        }
+    }
+
+    private void UpdateRadius()
+    {
+        itemCollider.radius += 0.5f;
+        PlayerPrefs.SetFloat(radiusPrefs, itemCollider.radius);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        healthBar.fillAmount -= damage / 100;
+        if (health <= 0)
+        {
+            _animator.SetTrigger("Death");
+            gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+            this.enabled = false;
+        }
+    }
+
+    IEnumerator ShootEnumator()
+    {
+        for (int i = 0; i < _shootCount; i++)
+        {
+            _direction = FindCloselyEnemy().transform.position - transform.position;
+            ObjectPoolManager.Instance.GetPoolObject("Shuriken", transform.position).GetComponent<Rigidbody2D>().velocity = new Vector2(_direction.x, _direction.y).normalized * shootForce * Time.deltaTime;
+            yield return new WaitForSeconds(.2f);
         }
     }
 }

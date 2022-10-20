@@ -17,9 +17,11 @@ public class EnemyController : MonoBehaviour, IEnemy
     private SpriteRenderer _spriteRenderer;
     private CapsuleCollider2D _capsuleCollider2D;
     private HitTextController _hitTextController;
+    private GameObject _gem;
 
     private void Awake()
     {
+        _gem = transform.GetChild(0).gameObject;
         _hitTextController = gameObject.GetComponentInChildren<HitTextController>();
         _capsuleCollider2D = GetComponent<CapsuleCollider2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -49,10 +51,16 @@ public class EnemyController : MonoBehaviour, IEnemy
 
     public void TakeDamage(float damage)
     {
+        if (_enemyHealth <= 0)
+        {
+            return;
+        }
         _enemyHealth -= damage;
         _hitTextController.ShowText(damage);
         if (_enemyHealth <= 0)
         {
+            _gem.SetActive(true);
+            _gem.transform.SetParent(null);
             _animator.SetTrigger("Die");
             _spriteRenderer.sortingOrder = 1;
             _capsuleCollider2D.isTrigger = true;
@@ -63,11 +71,11 @@ public class EnemyController : MonoBehaviour, IEnemy
     {
         _spriteRenderer.sortingOrder = 2;
         _capsuleCollider2D.isTrigger = false;
-        this.enabled = true;    
+        this.enabled = true;
     }
 
 
-    public void Die()
+    public void Die()//Animator içinde kullanmak için
     {
         gameObject.SetActive(false);
     }
@@ -77,6 +85,7 @@ public class EnemyController : MonoBehaviour, IEnemy
         if (collision.gameObject.CompareTag("Player"))
         {
             _animator.SetBool("Attack", true);
+            collision.gameObject.GetComponent<PlayerController>().TakeDamage(10);
         }
     }
 
