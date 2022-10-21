@@ -33,6 +33,8 @@ public class PlayerController : MonoSingleton<PlayerController>, IPlayer
         }
     }
 
+    public PlayerSkillType playerSkillType;
+
     [SerializeField] private CircleCollider2D itemCollider;
 
     [SerializeField] private Slider expSliderBar;

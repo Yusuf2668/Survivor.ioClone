@@ -6,20 +6,32 @@ public class RocketController : MonoBehaviour, IRocketController
 {
     [SerializeField] private GameObject _animator;
 
+    private Rigidbody2D rigidbody2D;
+
+    private void Awake()
+    {
+        rigidbody2D = GetComponent<Rigidbody2D>();
+    }
+
     private void Start()
     {
-        //belli bir süre sonra kendisi otomatik olarak kapanýcak
+        Invoke("Destory", 4f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!collision.GetComponent<EnemyController>()) return;
+        rigidbody2D.velocity = Vector3.zero;
         collision.GetComponent<EnemyController>().TakeDamage(200);
-        if (_animator.activeInHierarchy) return;
         _animator.SetActive(true);
         Invoke("Destory", 0.34f);
     }
     public void Destory()//0.35 second after
     {
         gameObject.SetActive(false);
+    }
+    private void OnDisable()
+    {
+        _animator.SetActive(false);
     }
 }

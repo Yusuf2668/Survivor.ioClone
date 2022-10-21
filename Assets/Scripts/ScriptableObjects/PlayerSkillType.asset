@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerSkillType
   m_EditorClassIdentifier: 
   rocketRepeatTime: 2
-  rocketSpeed: 100
+  rocketSpeed: 30000
