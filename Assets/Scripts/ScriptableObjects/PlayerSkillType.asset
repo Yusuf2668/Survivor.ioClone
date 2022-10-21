@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37b35d76f0b0d7c47b0da6f7396a00f5, type: 3}
   m_Name: PlayerSkillType
   m_EditorClassIdentifier: 
-  rocketRepeatTime: 2
-  rocketSpeed: 30000
+  rocketRepeatTime: 3
+  rocketSpeed: 10000

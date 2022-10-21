@@ -6,6 +6,7 @@ public class AttackSkillControllerUI : MonoBehaviour, IAtackSkill
 {
     public void UpdateShootCount()
     {
+        EventManager.Instance.SkillSelected();
         PlayerController.Instance.ShootCount++;
     }
 }

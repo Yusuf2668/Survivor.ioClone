@@ -5,9 +5,17 @@ using UnityEngine;
 
 public class RocketSkillControllerUI : MonoBehaviour, IRocketSkillControllerUI
 {
+    private RocketLunchSkill rocketLunchSkill;
     public void AddRocketLaunchingSkill()
     {
-        if (PlayerController.Instance.gameObject.GetComponent<RocketLunchSkill>()) return;
+        rocketLunchSkill = PlayerController.Instance.gameObject.GetComponent<RocketLunchSkill>();
+        EventManager.Instance.SkillSelected();
+        if (rocketLunchSkill)
+        {
+            rocketLunchSkill.RocketCount++;
+            return;
+        }
         PlayerController.Instance.gameObject.AddComponent<RocketLunchSkill>();
+        PlayerPrefs.SetInt(PlayerController.Instance.rocketSkillHavePrefs, 1);
     }
 }

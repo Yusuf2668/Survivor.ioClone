@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class LevelManager : MonoSingleton<LevelManager>, ILevelManager
 {
+    [SerializeField] GameObject skillSelectPanel;
+
     [SerializeField] Slider expBar;
     [SerializeField] TextMeshProUGUI levelText;
 
@@ -21,6 +23,7 @@ public class LevelManager : MonoSingleton<LevelManager>, ILevelManager
         _exp = PlayerPrefs.GetFloat(exp_Key, 0.25f);
         levelText.text = _level.ToString();
         expBar.value = _exp;
+        expBar.maxValue = _level;
     }
 
     public void AddExp(float exp)
@@ -33,12 +36,34 @@ public class LevelManager : MonoSingleton<LevelManager>, ILevelManager
 
     public void LevelUpdate()
     {
-        if (expBar.value >= 0.9f)
+        if (expBar.value >= expBar.maxValue)
         {
             _exp = 0;
             _level++;
+            expBar.maxValue = _level;
             PlayerPrefs.SetFloat(level_Key, _level);
             levelText.text = _level.ToString();
+            OpenSkillPanel();
         }
+    }
+
+    private void OnEnable()
+    {
+        EventManager.Instance.skillSelected += CloseSkillPanel;
+    }
+    private void OnDisable()
+    {
+        EventManager.Instance.skillSelected -= CloseSkillPanel;
+    }
+
+    private void OpenSkillPanel()
+    {
+        Time.timeScale = 0;
+        skillSelectPanel.SetActive(true);
+    }
+    private void CloseSkillPanel()
+    {
+        skillSelectPanel.SetActive(false);
+        Time.timeScale = 1;
     }
 }

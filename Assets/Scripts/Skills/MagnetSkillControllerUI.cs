@@ -6,6 +6,7 @@ public class MagnetSkillControllerUI : MonoBehaviour, IMagnet
 {
     public void UpdateItemColliderRadius()
     {
+        EventManager.Instance.SkillSelected();
         PlayerController.Instance.ItemColliderRadius += 0.5f;
     }
 }

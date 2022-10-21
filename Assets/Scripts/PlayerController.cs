@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -49,7 +46,8 @@ public class PlayerController : MonoSingleton<PlayerController>, IPlayer
     [SerializeField] private SpriteRenderer _playerBodySprite;
 
 
-    public string radiusPrefs = "radiusPrefs";
+    private string radiusPrefs = "radiusPrefs";
+    [HideInInspector] public string rocketSkillHavePrefs = "RocketHave";
 
     private Vector3 _direction;
 
@@ -65,6 +63,10 @@ public class PlayerController : MonoSingleton<PlayerController>, IPlayer
 
     private void Awake()
     {
+        if (PlayerPrefs.GetInt(rocketSkillHavePrefs, 0) == 1)
+        {
+            gameObject.AddComponent<RocketLunchSkill>();
+        }
         _itemColliderRadius = PlayerPrefs.GetFloat(radiusPrefs, 0.5f);
         itemCollider.radius = _itemColliderRadius;
         _animator = GetComponent<Animator>();
@@ -127,6 +129,7 @@ public class PlayerController : MonoSingleton<PlayerController>, IPlayer
             _playerBodySprite.flipX = false;
         }
         transform.position += new Vector3(direction.x, direction.z) * Time.deltaTime * speed;
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -32.5f, 32.5f), Mathf.Clamp(transform.position.y, -34f, 34));
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -143,12 +146,6 @@ public class PlayerController : MonoSingleton<PlayerController>, IPlayer
                 collision.gameObject.SetActive(false);
                 break;
         }
-    }
-
-    private void UpdateRadius()
-    {
-        itemCollider.radius += 0.5f;
-        PlayerPrefs.SetFloat(radiusPrefs, itemCollider.radius);
     }
 
     public void TakeDamage(float damage)
