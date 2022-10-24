@@ -19,4 +19,10 @@ public class HitTextController : MonoBehaviour
         hitText.transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0.1f), 0.5f);
         hitText.transform.DOLocalMoveY(-0.3f, 1f);
     }
+
+    public void ClearText()
+    {
+        hitText.text = null;
+        hitText.transform.DOLocalMoveY(-0.5f, 0.1f);
+    }
 }

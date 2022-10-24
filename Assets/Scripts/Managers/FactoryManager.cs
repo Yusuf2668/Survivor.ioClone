@@ -14,6 +14,9 @@ public class FactoryManager : MonoSingleton<FactoryManager>
             case "BlueEnemy":
                 resultObject = Instantiate(factoryType.blueEnemy, parent);
                 break;
+            case "BrownEnemy":
+                resultObject = Instantiate(factoryType.brownEnemy, parent);
+                break;
             case "Shuriken":
                 resultObject = Instantiate(factoryType.shuriken, parent);
                 break;

@@ -15,6 +15,7 @@ TagManager:
   - Gem
   - Magnet
   - Rocket
+  - BrownEnemy
   layers:
   - Default
   - TransparentFX

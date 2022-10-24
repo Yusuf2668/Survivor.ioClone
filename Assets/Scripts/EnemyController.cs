@@ -46,7 +46,10 @@ public class EnemyController : MonoBehaviour, IEnemy
         {
             _spriteRenderer.flipX = false;
         }
-        transform.position += _direction * Time.deltaTime * enemyType.enemySpeed;
+        if (_enemyHealth > 0)
+        {
+            transform.position += _direction * Time.deltaTime * enemyType.enemySpeed;
+        }
     }
 
     public void TakeDamage(float damage)
@@ -67,13 +70,14 @@ public class EnemyController : MonoBehaviour, IEnemy
             this.enabled = false;
         }
     }
-    private void OnEnable()
+
+    private void OnDisable()
     {
+        _hitTextController.ClearText();
         _spriteRenderer.sortingOrder = 2;
         _capsuleCollider2D.isTrigger = false;
         this.enabled = true;
     }
-
 
     public void Die()//Animator içinde kullanmak için
     {

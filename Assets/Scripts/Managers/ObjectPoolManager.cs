@@ -42,6 +42,9 @@ public class ObjectPoolManager : MonoSingleton<ObjectPoolManager>
             case "Rocket":
                 nextObject = FindNextObject(2, spawnPosition);
                 break;
+            case "BrownEnemy":
+                nextObject = FindNextObject(3, spawnPosition);
+                break;
         }
         return nextObject;
     }
